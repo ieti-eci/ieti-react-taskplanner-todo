@@ -76,8 +76,9 @@ export const TaskForm = ({}) => {
 
   return (
     <form>
+    <form class="Create">
       <input type="checkbox" onChange={() => handleChangeCheckBox()} checked={task.isCompleted}/>
-      <button type="button" onClick={handleSave}>
+      <button class="Button" type="button" onClick={handleSave}>
         Save
       </button>
       <ul>

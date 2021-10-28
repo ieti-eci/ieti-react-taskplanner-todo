@@ -1,6 +1,7 @@
 import { TaskList } from "./components/TaskList";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { TaskForm } from "./components/TaskForm";
+import "./Style.css";
 
 function App() {
   return (
