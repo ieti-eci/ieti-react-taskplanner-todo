@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { useData } from "../providers/DataProvider";
 
@@ -10,17 +10,6 @@ export const TaskForm = ({}) => {
 
   const [text, setText] = useState(task?.name ?? "");
 
-  const [isChecked, setIsChecked] = useState(false);
-
-  const SecondPage = props => {
-      const location = useLocation();
-
-      useEffect(() => {
-        setIsChecked(location.state.isChecked)
-      }, [location])
-  }
-
-  SecondPage()
 
   if (!task) {
     return <div>Task not found</div>;
@@ -46,6 +35,16 @@ export const TaskForm = ({}) => {
     history.goBack();
   };
  
+  const handleChangeCheckBox = () => {
+    let updateCheckbox = data.tasks.map((task) => {
+      if (task.id === taskId) {
+        return { ...task, isCompleted: !task.isCompleted };
+      }
+      return task;
+    });
+
+    setData(() => ({ ...data, tasks: updateCheckbox }));
+  }
 
   return (
     <form>
@@ -55,7 +54,7 @@ export const TaskForm = ({}) => {
         value={text}
         onChange={handleChange}
       />
-      <input type="checkbox" checked={isChecked}/>
+      <input type="checkbox" onChange={() => handleChangeCheckBox()} checked={task.isCompleted}/>
       <button type="button" onClick={handleSave}>
         Save
       </button>
