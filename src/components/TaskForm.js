@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useHistory, useParams } from "react-router";
 import { useData } from "../providers/DataProvider";
 
-export const TaskForm = () => {
+export const TaskForm = ({}) => {
   const history = useHistory();
   const { data, setData } = useData();
   const { taskId } = useParams();
   const task = data.tasks.find((task) => task.id === taskId);
 
   const [text, setText] = useState(task?.name ?? "");
+
 
   if (!task) {
     return <div>Task not found</div>;
@@ -33,6 +34,17 @@ export const TaskForm = () => {
 
     history.goBack();
   };
+ 
+  const handleChangeCheckBox = () => {
+    let updateCheckbox = data.tasks.map((task) => {
+      if (task.id === taskId) {
+        return { ...task, isCompleted: !task.isCompleted };
+      }
+      return task;
+    });
+
+    setData(() => ({ ...data, tasks: updateCheckbox }));
+  }
 
   return (
     <form>
@@ -42,8 +54,7 @@ export const TaskForm = () => {
         value={text}
         onChange={handleChange}
       />
-      <input type="checkbox" checked={task.isCompleted} />
-
+      <input type="checkbox" onChange={() => handleChangeCheckBox()} checked={task.isCompleted}/>
       <button type="button" onClick={handleSave}>
         Save
       </button>
