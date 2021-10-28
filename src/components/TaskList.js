@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useData } from "../providers/DataProvider";
 import { TaskItem } from "./TaskItem";
-
+import "../Style.css";
 export const TaskList = () => {
   const { data, setData } = useData();
   const [textValue, setTextValue] = useState("");
@@ -41,17 +41,17 @@ export const TaskList = () => {
 
   return (
     <article>
-      <form onSubmit={handleSubmit}>
-        <input
+      <form class="Create" onSubmit={handleSubmit}>
+        <input class="input"
           value={textValue}
           onChange={handleTextChange}
           type="text"
           placeholder="Task name"
         />
-        <button>Create Task</button>
+        <button class="Button" >Create Task</button>
       </form>
 
-      <ul>
+      <ul id="Tasks">
         {tasks.map((task, index) => {
           return (
             <TaskItem
