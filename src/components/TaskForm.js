@@ -9,6 +9,10 @@ export const TaskForm = ({}) => {
   const task = data.tasks.find((task) => task.id === taskId);
 
   const [text, setText] = useState(task?.name ?? "");
+  const [newDescription, setNewDescription] = useState(task?.description ?? "");
+  const [newAssignedTo, setNewAssignedTo] = useState(task?.assignedTo ?? "");
+  const [newDueDate, setNewDueDate] = useState(task?.dueDate ?? "");
+  const [newStatus, setNewStatus] = useState(task?.status ?? "");
 
 
   if (!task) {
@@ -21,10 +25,32 @@ export const TaskForm = ({}) => {
     setText(inputName);
   };
 
+  const handleChangeDescription = (e) => {
+    const inputDescription = e.target.value;
+
+    setNewDescription(inputDescription);
+  }
+
+  const handleAssignedTo = (e) => {
+    const inputAssignedTo = e.target.value;
+
+    setNewAssignedTo(inputAssignedTo);
+  }
+
+  const handleDueDateChange = (e) => {
+    const inputDate = e.target.value;
+
+    setNewDueDate(inputDate);
+  }
+
+  const handleStatusChange = (e) => {
+    setNewStatus(e);
+  }
+
   const handleSave = () => {
     const newTasks = data.tasks.map((task) => {
       if (task.id === taskId) {
-        return { ...task, name: text };
+        return { ...task, name: text, description: newDescription, assignedTo: newAssignedTo, dueDate: newDueDate };
       }
 
       return task;
@@ -46,18 +72,29 @@ export const TaskForm = ({}) => {
     setData(() => ({ ...data, tasks: updateCheckbox }));
   }
 
+
+
   return (
+    <form>
     <form class="Create">
-      <input class="input"
-        type="text"
-        placeholder="Task Name"
-        value={text}
-        onChange={handleChange}
-      />
       <input type="checkbox" onChange={() => handleChangeCheckBox()} checked={task.isCompleted}/>
       <button class="Button" type="button" onClick={handleSave}>
         Save
       </button>
+      <ul>
+        <li>Name: <input  type="text" placeholder="Task Name" value={text} onChange={handleChange}/></li>
+        <li>Description: <input type="text" placeholder="TaskName" value={newDescription} onChange={handleChangeDescription} /></li>
+        <li>AssignedTo: <input type="text" placeholder="AssignedTo" value={newAssignedTo} onChange={handleAssignedTo} /></li>
+        <li>DueDate: <input type="date" placeholder="dueDate" value={newDueDate} onChange={handleDueDateChange} /></li>
+        <li>Status: 
+          <select value={newStatus} onChange={(val) => handleStatusChange(val.target.value)}>
+            <option value="TODO">TODO</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="REVIEW">REVIEW</option>
+            <option value="DONE">DONE</option>
+          </select>
+        </li>
+      </ul>
     </form>
   );
 };
